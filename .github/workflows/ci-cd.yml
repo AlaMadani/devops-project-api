@@ -1,0 +1,60 @@
+name: CI/CD Pipeline
+
+# Déclencheur : Quand on pousse sur la branche master (ou main)
+on:
+  push:
+    branches: [ "master", "main" ]
+  pull_request:
+    branches: [ "master", "main" ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Récupérer le code
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # 2. Installer Java 17 (comme sur ton PC)
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: maven
+
+    # 3. Construire et Tester avec Maven
+    # Cela lance aussi les tests unitaires automatiquement
+    - name: Build with Maven
+      run: mvn clean package
+
+    # --- PARTIE SECURITE (SAST) ---
+    # Analyse statique simple du code pour trouver des failles
+    - name: Run Trivy vulnerability scanner (SAST)
+      uses: aquasecurity/trivy-action@master
+      with:
+        scan-type: 'fs'
+        scan-ref: '.'
+        format: 'table'
+        exit-code: '0' # Ne bloque pas le build pour l'instant (0), met 1 pour bloquer
+        ignore-unfixed: true
+        severity: 'CRITICAL,HIGH'
+
+    # 4. Se connecter à Docker Hub
+    - name: Login to Docker Hub
+      if: github.event_name != 'pull_request' # Ne pas faire ça lors d'un simple Pull Request
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    # 5. Construire et Pousser l'image Docker
+    - name: Build and push Docker image
+      if: github.event_name != 'pull_request'
+      uses: docker/build-push-action@v4
+      with:
+        context: .
+        push: true
+        # Remplace TON_USER_DOCKER par ton vrai pseudo ici ou utilise la variable
+        tags: ${{ secrets.DOCKER_USERNAME }}/mon-api-devops:latest
