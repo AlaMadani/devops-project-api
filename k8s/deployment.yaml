@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: devops-api-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: devops-api
+  template:
+    metadata:
+      labels:
+        app: devops-api
+    spec:
+      containers:
+      - name: devops-api-container
+        image: alamadani/mon-api-devops:v2  
+        imagePullPolicy: IfNotPresent     
+        ports:
+        - containerPort: 8080
