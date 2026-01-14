@@ -27,7 +27,7 @@ A robust REST API service designed to demonstrate end-to-end DevOps practices. T
 To run the application directly on your machine:
 ```
 mvn clean package  
-java \-jar target/devops-api-0.0.1-SNAPSHOT.jar
+java -jar target/devops-api-0.0.1-SNAPSHOT.jar
 ```
 
 Access the API at: http://localhost:8080
@@ -37,7 +37,7 @@ Access the API at: http://localhost:8080
 You can pull the pre-built image from Docker Hub:
 ```
 docker pull alamadani/mon-api-devops:latest  
-docker run \-p 8080:8080 alamadani/mon-api-devops:latest
+docker run -p 8080:8080 alamadani/mon-api-devops:latest
 ```
 ## **☸️ Kubernetes Deployment (Kind)**
 
@@ -45,7 +45,7 @@ docker run \-p 8080:8080 alamadani/mon-api-devops:latest
 
 If you haven't created a cluster yet:
 ```
-kind create cluster \--name devops-cluster
+kind create cluster --name devops-cluster
 ```
 ### **Step 2: Deploy the Stack**
 
@@ -53,7 +53,7 @@ Deploy the Application, Prometheus, and Grafana using the manifest files:
 
 \# Apply all configurations  
 ```
-kubectl apply \-f k8s/
+kubectl apply -f k8s/
 ```
 ### **Step 3: Access Services (Port Forwarding)**
 
@@ -96,7 +96,7 @@ curl http://localhost:8080/api/message
 ```
 **Update the message:**
 ```
-curl \-X POST \-H "Content-Type: text/plain" \-d "DevOps is awesome\!" http://localhost:8080/api/message
+curl -X POST -H "Content-Type: text/plain" -d "DevOps is awesome\!" http://localhost:8080/api/message
 ```
 ## **📊 Observability**
 
