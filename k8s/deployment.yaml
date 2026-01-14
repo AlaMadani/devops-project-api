@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: devops-api-container
-        image: alamadani/mon-api-devops:v2  
+        image: alamadani/mon-api-devops:latest 
         imagePullPolicy: IfNotPresent     
         ports:
         - containerPort: 8080
