@@ -57,4 +57,4 @@ jobs:
         context: .
         push: true
         # Remplace TON_USER_DOCKER par ton vrai pseudo ici ou utilise la variable
-        tags: ${{ secrets.DOCKER_USERNAME }}/mon-api-devops:latest
+        tags: ${{ secrets.DOCKER_USERNAME }}/mon-api-devops:v3

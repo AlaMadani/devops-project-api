@@ -33,6 +33,7 @@ spec:
       containers:
         - name: prometheus
           image: prom/prometheus:main
+          imagePullPolicy: IfNotPresent 
           ports:
             - containerPort: 9090
           volumeMounts:
